@@ -29,6 +29,7 @@ def inflate(data):
     inflated += decompress.flush()
     return inflated
 
+
 def deflate(data, compresslevel=9):
     compress = zlib.compressobj(
             compresslevel,        # level: 0-9
@@ -67,7 +68,6 @@ class PackageLoader:
         self.packageFile = filename
         self.packageFs = open(filename, 'rb')
         self.__extractKvs()
-        pass
 
 
     def __extractKvs(self):
