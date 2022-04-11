@@ -13,7 +13,7 @@ python -m pip install Py3AMF
 ### Unpacking
 
 ```
-python package.py [-d] unpack mypackage.dat destination_folder
+python package.py -d unpack mypackage.dat destination_folder
 ```
 
 Unpacks all contents of the package "mypackage.dat" into the directory "destination_folder".
