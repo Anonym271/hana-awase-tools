@@ -6,6 +6,23 @@ from pyamf.amf3 import ByteArray
 
 
 
+EXT_CATEGORY_DICT = {
+    'TXT': 'text',
+    'DAT': 'text',
+    'WAS': 'text',
+    'JPG': 'image',
+    'PNG': 'image',
+    'GIF': 'image',
+    'JPEG': 'image',
+    'FLV': 'image',
+    'MP4': 'image',
+    'MP3': 'sound',
+    'SWF': 'swf',
+    'WFF': 'font',
+}
+
+
+
 def inflate(data):
     decompress = zlib.decompressobj(-zlib.MAX_WBITS)
     inflated = decompress.decompress(data)
@@ -33,31 +50,9 @@ def deflate(data, compresslevel=9):
     return deflated
 
 
-
-def read_package(filename, offs=0):
-    with open(filename, 'rb') as f:
-        decomp = inflate(f.read()[offs:])
-        return decomp
-
-
 def get_ext(fn: str):
     return fn[fn.rfind('.')+1:]
     
-
-EXT_CATEGORY_DICT = {
-    'TXT': 'text',
-    'DAT': 'text',
-    'WAS': 'text',
-    'JPG': 'image',
-    'PNG': 'image',
-    'GIF': 'image',
-    'JPEG': 'image',
-    'FLV': 'image',
-    'MP4': 'image',
-    'MP3': 'sound',
-    'SWF': 'swf',
-    'WFF': 'font',
-}
 
 def get_file_type(filename: str):
     ext = get_ext(filename).upper()
@@ -74,6 +69,7 @@ class PackageLoader:
         self.__extractKvs()
         pass
 
+
     def __extractKvs(self):
         with open(self.packageFile, 'rb') as f:
             offs = unpack('>I', f.read(4))[0]
@@ -85,6 +81,7 @@ class PackageLoader:
                 val[0] = int(val[0])
                 val[1] = int(val[1])
     
+
     def loadFileBytes(self, filename: str, forceExt: str = None):
         if not filename in self.kvs:
             raise FileNotFoundError(filename)
@@ -117,6 +114,7 @@ class PackageLoader:
             ret[get_file_type(filename)][filename] = data
         return ret
     
+
     def loadFileCategories(self):
         ret = {
             "text":{},
@@ -195,8 +193,6 @@ def create_package(directory, output_file=None):
         fout.seek(0)
         fout.write(pack('>I', kvs_pos))
             
-
-
 
 
 if __name__ == '__main__':
